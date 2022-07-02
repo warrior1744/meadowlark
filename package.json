@@ -1,0 +1,67 @@
+{
+  "name": "meadowlark",
+  "version": "1.0.0",
+  "description": "npm init <initializer> (set up a new or existing npm package. initializer in this case is an npm package named create-<initializer> which will be installed by npm-exec)",
+  "main": "meadowlark.js",
+  "scripts": {
+    "start": "node meadowlark.js",
+    "stress": "artillery quick --count 10 -n 20 http://localhost:3000/",
+    "test": "jest",
+    "lint": "eslint meadowlark.js lib"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "cat-names": "^3.0.0",
+    "connect-multiparty": "^2.2.0",
+    "connect-redis": "^6.1.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.0.1",
+    "ecpay_aio_nodejs": "^1.0.2",
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.2",
+    "express-session": "^1.17.2",
+    "forever": "^4.0.3",
+    "fs": "^0.0.1-security",
+    "googleapis": "^100.0.0",
+    "html-to-formatted-text": "^2.7.0",
+    "ioredis": "^5.0.3",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.2.9",
+    "morgan": "^1.10.0",
+    "multiparty": "^4.2.3",
+    "nodemailer": "^6.7.3",
+    "open": "^8.4.0",
+    "passport": "^0.5.2",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-linkedin-oauth2": "^2.0.0",
+    "passport-twitter": "^1.0.4",
+    "pg": "^8.7.3",
+    "querystringify": "^2.2.0",
+    "redis": "^4.0.6",
+    "server-destroy": "^1.0.1",
+    "vhost": "^3.0.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "eslint": "^8.10.0",
+    "eslint-plugin-react": "^7.29.3",
+    "eslint-plugin-vue": "^8.5.0",
+    "jest": "^27.5.1",
+    "node-fetch": "^2.6.0",
+    "portfinder": "^1.0.28",
+    "puppeteer": "^13.5.0"
+  },
+  "engines": {
+    "npm": "8.3.1",
+    "node": "^16.14.0"
+  },
+  "directories": {
+    "lib": "lib"
+  }
+}

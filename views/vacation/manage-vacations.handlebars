@@ -1,0 +1,12 @@
+<h1>Vacations Management</h1>
+{{#each vacations}}
+  <div class="vacation">
+    <h5>{{name}} : {{sku}}</h5>   
+    <a href="/vacation-delete/{{name}}/{{sku}}" class="btn btn-default">Remove this vacation</a>
+    
+    
+  </div>
+{{/each}}
+
+
+

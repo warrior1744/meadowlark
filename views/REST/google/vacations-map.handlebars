@@ -1,0 +1,42 @@
+
+    <h3>Meadowlark Google Maps</h3>
+    <!--The div element for the map -->
+    <div id="map" style="width: 100%; height: 60vh;"></div>
+
+    <!-- 
+     The `defer` attribute causes the callback to execute after the full HTML
+     document has been parsed. For non-blocking uses, avoiding race conditions,
+     and consistent behavior across browsers, consider loading using Promises
+     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+    -->
+
+<script>
+// Initialize and add the map
+let map = undefined
+async function initMap() {
+
+  // The map, centered at Uluru
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 7,
+    center: { lat: 44.0978126, lng: -120.0963654 },
+  })
+
+  const vacations = await fetch('api/vacations').then(res => res.json())
+  vacations.forEach(({ name, location}) => {
+    const marker = new google.maps.Marker({
+        position: location.coordinates,
+        map,
+        title: name,
+    })
+  })
+
+}
+
+window.initMap = initMap;
+</script>
+
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key={{googleApiKey}}&callback=initMap&v=weekly"
+      async defer
+    ></script>

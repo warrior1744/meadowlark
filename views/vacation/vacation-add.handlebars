@@ -1,0 +1,152 @@
+<h2>Add Vacation Page</h2>
+
+<div id="vacationAddFormContainer">
+    <form class="form-horizontal" role="form" id="vacationAddForm">
+        <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="slug" class="col-sm-2 control-label">Slug</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="slug" name="slug">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="category" class="col-sm-2 control-label">Category</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="category" name="category">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sku" class="col-sm-2 control-label">Sku</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="sku" name="sku">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description" class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="description" name="description"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="location" class="col-sm-2 control-label">Location</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="location" name="location"  required>
+        </div>
+        </div>
+        <div class="form-group">
+            <label for="price" class="col-sm-2 control-label">Price</label>
+            <div class="col-sm-4">
+                <input type="number" step="0.01" class="form-control" id="price" name="price">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="tags" class="col-sm-2 control-label">Tags</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="tags"  required>
+                <input type="text" class="form-control" name="tags">
+                <input type="text" class="form-control" name="tags">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="isSeason" class="col-sm-2 control-label">is Season ?</label>
+            <div class="col-sm-4">
+                <input type="checkbox" name="isSeason" id="isSeason" checked="checked"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="requiresWaiver" class="col-sm-2 control-label">requires Waiver ?</label>
+            <div class="col-sm-4">
+                <input type="checkbox" name="requiresWaiver" id="requiresWaiver" checked="checked"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="maximumGuests" class="col-sm-2 control-label">Maximum Guests</label>
+            <div class="col-sm-4">
+                <input type="number" min="1" max="9999" step="1" class="form-control" id="maximumGuests" name="maximumGuests">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="available" class="col-sm-2 control-label">Available ?</label>
+            <div class="col-sm-4">
+                <input type="checkbox" name="available" id="available" checked="checked"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="packagesSold" class="col-sm-2 control-label">Packages Sold</label>
+            <div class="col-sm-4">
+                <input type="number" min="0" max="9999" step="1" class="form-control" id="packagesSold" name="packagesSold">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="notes" class="col-sm-2 control-label">Notes</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="notes" name="notes">
+            </div>
+        </div>
+        <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+        </div>
+    </form>
+</div>
+
+{{#section 'scripts'}}
+<script>
+
+ function checkboxValue(id){
+    let checkbox = document.getElementById(id)
+    if(checkbox.checked){
+        return true
+    }else{
+        return false
+    }
+ }
+
+
+  document.getElementById('vacationAddForm')
+    .addEventListener('submit', evt => {
+      evt.preventDefault()
+      const body = new FormData(evt.target)
+      let tagsArray = []
+      let tags = document.getElementsByName('tags')//we need to induce the tags data
+      for(let element of tags){
+          tagsArray.push(element.value)
+      }
+      body.set('tags', tagsArray)//when it's set, the array becomes a string
+      let isSeason = checkboxValue('isSeason')//get checkbox value as true or false
+      let requiresWaiver = checkboxValue('requiresWaiver')
+      let available = checkboxValue('available')
+      body.set('isSeason', isSeason)//value becomes string
+      body.set('requiresWaiver', requiresWaiver)
+      body.set('available', available)
+
+      const container = document.getElementById('vacationAddFormContainer')
+      const headers = {'CSRF-Token': body.get('_csrf')}
+      fetch('/add-vacation-process', { method: 'POST', body, headers })
+        .then(res => {
+          if(res.status < 200 || res.status >= 300)
+            throw new Error(`Request failed with status ${res.status}`)
+          return res.json()
+        })
+        .then(json => {
+           let message = ''
+           if(json.notice !== ''){
+               message += json.notice + json.sku
+           }
+           container.innerHTML = '<b>New vacation data added successfully !</b>'+ message + 
+              '</br><p><a href="/vacations">Return to Vacation page</a></p>'
+        })
+        .catch(err => {
+          container.innerHTML = `<b>We're sorry, we had a problem ` +
+            `adding the new vacation.  Please <a href="/add-vacation">try again</a>`
+        })
+  })
+</script>
+{{/section}}

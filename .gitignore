@@ -1,0 +1,18 @@
+# ignore packages installed by npm
+node_modules/
+coverage/
+integration-tests/
+# public/bootstrap4/
+# public/img/
+# public/jquery-3.6.0.js
+# public/build
+.env
+data/
+Resources/
+
+.credentials.*
+.DS_Store
+# put any other files you don't want to check in here, such as .DS_Store
+# (OSX), *.bak, etc.
+
+.log

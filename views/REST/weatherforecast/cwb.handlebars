@@ -1,0 +1,104 @@
+<h1>歡迎來到 中央氣象局 查詢系統</h1>
+
+{{#if location}}
+
+{{limit}}
+{{location}}
+
+{{else}}
+<p>There is no result to show here</p>
+{{/if}}
+<p>輸入查詢條件</p>
+<div id="weather Container">
+    <form action="/weather-forecast" method="POST" class="form-horizontal" role="form" id="weather-search">
+    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+
+        <div class="form-group">
+          <label for="limit" class="col-sm-2 control-label">Search Limits</label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control" 
+            id="limit" name="limit" min="10" max="50" value="10">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="location" class="col-sm-2 control-label">Location</label>
+          <div class="col-sm-4" id="selection_container">
+
+            {{!-- populate selection and options here --}}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </div>
+    </form>
+</div>
+
+
+{{#section 'scripts'}}
+   <script>
+     const options = {
+      "桃園市": ["新屋區", "中壢區", "大園區"],
+      "台北市": ["中正區","大安區","大同區"],
+      "台南市": ["永康區","安平區","仁德區"]}
+
+     populateSelections()  
+
+function populateSelections(){
+  const container = document.getElementById('selection_container')
+  let countySelection = document.createElement('select')
+  countySelection.id = "county"
+  countySelection.name = "county"
+  countySelection.classList.add('form-select')
+  //initially create the options
+  for(let key in options){
+   let option = document.createElement('option')
+   option.value = key
+   option.text = key
+   countySelection.appendChild(option)
+  }
+  container.appendChild(countySelection)
+  const county = document.getElementById('county')
+  county[0].selected = true
+  let value = county.value
+  let districtSelect = document.createElement('select')
+  districtSelect.id = "district"
+  districtSelect.name = "district"
+  districtSelect.classList.add('form-select')
+  createDistricts(districtSelect, value)
+  //
+  countySelection.addEventListener('change', () => {
+    let value = county.value
+    removeOptions(districtSelect)
+    createDistricts(districtSelect, value)
+  })
+}
+
+function createDistricts(districtSelect, value){
+  const container = document.getElementById('selection_container')
+  for(let key in options){
+    if(key === value){
+      let districtArray = options[key]
+      for(let i=0; i< districtArray.length; i++){
+        let option = document.createElement('option')
+        option.value = districtArray[i]
+        option.text = districtArray[i]
+        districtSelect.appendChild(option)
+      }
+    }
+  }
+  container.appendChild(districtSelect)
+}
+
+function removeOptions(element){
+  let options = element.options.length -1
+  for(let i= options; i>= 0 ; i--){
+    element.remove(i)
+  }
+} 
+
+   </script>
+{{/section}}

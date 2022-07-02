@@ -1,0 +1,59 @@
+{{#section 'head'}}
+  <style>
+    .CWBWeatherWidget{
+      border: solid 1px blue;
+      background-color: aqua;
+      margin: 4px;
+      padding: 4px;
+    }
+
+    .weatherTable table{
+      border: solid 1px red;
+      border-collapse: collapse;
+      margin: 5px;
+      padding: 4px;
+    }
+
+    .weatherTable tr td{
+    border: solid 1px red;
+
+    }
+  </style>
+{{/section}}
+
+
+<div class="CWBWeatherWidget">
+    <h2>{{partials.CWBWeatherContext.datasetDescription}}</h2>
+    <h1>日期：{{sliceDate partials.CWBWeatherContext.startDate}} - {{sliceDate partials.CWBWeatherContext.endDate}}</h1> 
+    <div>
+      <table class="weatherTable"  style="border: solid 1px black">
+          <thead>
+            <tr>
+              <th>縣市</th>
+              <th>{{sliceDate partials.CWBWeatherContext.startDate}} 06:00:00~18:00:00</th>
+              <th>{{sliceDate partials.CWBWeatherContext.startDate}} 18:00:00~06:00:00</th>
+              <th>{{sliceDate partials.CWBWeatherContext.endDate}} 06:00:00~18:00:00</th>
+            </tr>
+          </thead>
+          <tbody>
+            <div>
+                {{#each partials.CWBWeatherContext.location}}
+                  <tr style="border: solid 1px black">
+                    <td rowspan="6">{{locationName}}</td>
+                        {{#each weatherElement}}
+                          <tr  style="border: solid 1px black">
+                            {{#each time}}  
+                              <td  style="border: solid 1px black">{{parameter.parameterName}}</td>              
+                            {{/each}}
+                          </tr>
+                        {{/each}}
+                  </tr>
+                {{/each}}
+            </div>
+          </tbody>
+      </table>
+    </div>
+
+  <small>Source: <a href="https://opendata.cwb.gov.tw/dist/opendata-swagger.html#/%E9%A0%90%E5%A0%B1/get_v1_rest_datastore_F_C0032_001">
+      Central Weather Beaur</a></small>
+</div>

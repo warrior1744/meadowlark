@@ -1,0 +1,69 @@
+<h2>Welcome to the login page</h2>
+
+    <p> log in with other account you have</p>
+      <ul>
+        {{!-- <li><a href="/auth/facebook?redirect={{redirect}}">Login with Facebook</a></li> --}}
+        <li><a href="/auth/facebook?redirect={{redirect}}">Login with Facebook</a></li>
+        <li><a href="/auth/google?redirect={{redirect}}">Login with Google</a></li>
+        <li><a href="/auth/twitter?redirect={{redirect}}">Login with Twitter</a></li>
+        <li><a href="/auth/linkedin?redirect={{redirect}}">Login with LinkedIn</a></li>
+      </ul>
+
+<h1> Or you can login as one of our memeberships</h1>
+<div id="loginPageContainer">
+  <form class="form-horizontal" role="form"
+      id="loginPageForm"
+      enctype="multipart/form-data" method="POST"
+      action="/login">
+    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+    <div class="form-group">
+      <label for="username" class="col-sm-2 control-label">User Name</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" 
+        id="username" name="username">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password" class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-4">
+        <input type="password" class="form-control" required 
+            id="password" name="password">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{{#section 'scripts'}}
+  <script>
+    document.getElementById('loginPageForm')
+      .addEventListener('submit', evt => {
+        evt.preventDefault()
+        const form = evt.target
+        const body = JSON.stringify({
+          username: form.elements.username.value,
+          password: form.elements.password.value,
+        })
+        const headers = {'Content-Type' : 'application/json'}
+        const container = document.getElementById('loginPageContainer')
+        fetch('/login', { method: 'post', body, headers})
+          .then(resp => {
+            if(resp.status < 200 || resp.status >= 300)
+              throw new Error(`Request failed with status ${resp.status}`)
+            return resp.json()
+          })
+          .then(json => {
+            container.innerHTML = '<b>logged successfully!</b>'+
+            '</br> <a href="/">home</a>'
+          })
+          .catch(err => {
+            container.innerHTML = `<b>Jim, We're sorry, we had a problem with the login ` +
+              `Please <a href="/login-page">try again</a>`
+          })
+      })
+  </script>
+{{/section}}

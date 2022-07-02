@@ -1,0 +1,19 @@
+<p>Twitter Tweet API</p>
+<div id="twitterContainer">
+    <form action="/tweets" method="POST" class="form-horizontal" role="form" id="twitter-tweet-form">
+    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+          <div class="form-group">
+          <label for="tweet" class="col-sm-2 control-label">Search Tweets</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" 
+            id="search" name="search">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Confirm</button>
+          </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,31 @@
+<h1> Welcome to ECpay Test page</h1>
+
+
+<h2>Fill up the from and press Place Order</h2>
+<form class="form-horizontal" role="form"
+    action="/placeOrder" method="POST">
+  <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+
+  <div class="form-group">
+    <label for="productName" class="col-sm-2 control-label">Product Name</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control"
+      id="productName" name="productName">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="productName" class="col-sm-2 control-label">Product Name</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control"
+      id="productName" name="productName">
+    </div>
+  </div>
+
+  
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-4">
+      <button type="submit" class="btn btn-primary">Place Order</button>
+    </div>
+  </div>
+</form>
